@@ -1,60 +1,29 @@
-# 元のファイル
-# services:
-#   python:
-#     build: 
-#       context: ./docker/python
-#       dockerfile: Dockerfile
-#     volumes:
-#       - './python:/usr/src/app'
-#     tty: true
-#     stdin_open: true
-
-
-
-
-
-
-# Docker Composeのバージョンを指定します。この場合、バージョン3を使用します。
 version: '3'
-# このDocker Composeファイルで定義するサービスをリストします。
 services:
-  # scraperという名前のサービスを定義します。
   scraper:
-    # サービスのビルド設定を指定します。
     build: 
-      # Dockerfileのあるディレクトリを指定します。
-      # この場合、カレントディレクトリを指定しています。
       context: .
-      # Dockerfileの名前を指定します。
-      # この場合、Dockerfileを指定しています。
       dockerfile: Dockerfile
-    # ホストとコンテナ間でデータを共有するためのボリュームを指定します。
     volumes:
-      # ホストのdataディレクトリをコンテナの/app/dataディレクトリにマウントします。
-      - './data:/app/data'
-      # ホストのcredentials.jsonファイルをコンテナの/app/credentials.jsonファイルに読み取り専用でマウントします。
+      - .:/usr/src/app
+      - ./data:/usr/src/app/data
       - './scraping_credentials.json:/app/scraping_credentials.json:ro'
-    # 環境変数を指定します。
     environment:
-      # GOOGLE_APPLICATION_CREDENTIALS環境変数を設定します。
-      - GOOGLE_APPLICATION_CREDENTIALS=/app/scraping_credentials.json
-    # コンテナが起動したときに実行するコマンドを指定します。
+      - PYTHONUNBUFFERED=1
     command: python scraper.py
-    # コンテナが起動したときに標準入力を開いた状態にします。
     tty: true
-    # コンテナが起動したときに標準入力を開いた状態にします。
     stdin_open: true
-
 
   send_to_sheets:
     build: 
       context: .
       dockerfile: Dockerfile
     volumes:
-      - './data:/app/data'
+      - .:/usr/src/app
+      - ./data:/usr/src/app/data
       - './scraping_credentials.json:/app/scraping_credentials.json:ro'
     environment:
-      - GOOGLE_APPLICATION_CREDENTIALS=/app/scraping_credentials.json
+      - PYTHONUNBUFFERED=1
     command: python send_to_sheets.py
     tty: true
     stdin_open: true
