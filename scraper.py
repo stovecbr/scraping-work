@@ -10,12 +10,28 @@ from selenium import webdriver
 # seleniumのwebdriverモジュールからServiceクラスをインポートします。
 # これにより、Chromeドライバのサービスを管理するためのクラスが利用可能になります。
 from selenium.webdriver.chrome.service import Service
+
 # seleniumのwebdriverモジュールからByクラスをインポートします。
 # これにより、要素を特定するための方法を定義するためのクラスが利用可能になります。
 from selenium.webdriver.common.by import By
 # seleniumのwebdriverモジュールからOptionsクラスをインポートします。
 # これにより、Chromeブラウザのオプションを管理するためのクラスが利用可能になります。
 from selenium.webdriver.chrome.options import Options
+
+
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.ui import Select
+from selenium.webdriver.support import expected_conditions
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.common.action_chains import ActionChains
+
+# ChromeDriverのパスを設定
+webdriver_service = Service('/usr/bin/chromedriver')
+
+# WebDriverオブジェクトを作成
+# driver = webdriver.Chrome(service=webdriver_service)
+
 
 # Chromeの設定
 # Optionsクラスのインスタンスを作成します。
@@ -29,15 +45,24 @@ chrome_options.add_argument("--headless")
 chrome_options.add_argument("--no-sandbox")
 # デバッグ用のシャーレを無効にします。
 # これにより、一部の環境で問題を引き起こすことがあるメモリの使用量を削減できます。
-chrome_options.add_argument("--disable-dev-shm-usage")
+# Docker環境では/dev/shmのサイズがデフォルトで制限されており、この制限によりChromeがクラッシュすることがあります。
+# chrome_options.add_argument("--disable-dev-shm-usage")
+
+# Chromeのバイナリのパスを指定します。
+chrome_options.binary_location = "/usr/bin/google-chrome-stable"
+
+chrome_options.add_argument("--disable-gpu")  # GPUを無効にする
+chrome_options.add_argument("--remote-debugging-port=9222")  # リモートデバッグポートを設定する
+
 
 # WebDriverの設定
 # Serviceクラスのインスタンスを作成します。
 # これにより、Chromeドライバのサービスを管理するためのオブジェクトが作成されます。
-service = Service('/usr/local/bin/chromedriver')
+# service = Service('/usr/local/bin/chromedriver')
 # WebDriverのインスタンスを作成します。
 # 
-driver = webdriver.Chrome(service=service, options=chrome_options)
+# driver = webdriver.Chrome(service=service, options=chrome_options)
+driver = webdriver.Chrome(service=webdriver_service, options=chrome_options)
 
 # ココナラのページにアクセス
 # getメソッドを使用して、指定されたURLにアクセスします。
@@ -54,7 +79,7 @@ for i in range(1, 11):  # 上から10個のアイテムを収集
     try:
         # find_elementメソッドを使用して、指定された要素を取得します。
         # これにより、指定されたXPathパターンに一致する要素が取得されます。
-        title = driver.find_element(By.XPATH, f'//*[@id="some_xpath_pattern_{i}"]').text
+        title = driver.find_element(By.XPATH, f'//*[@id="__layout"]/div/div[2]/div[1]/div/ul/li[1]/ul/li[1]/a').text
         # appendメソッドを使用して、リストに要素を追加します。
         # これにより、収集されたタイトルがリストに追加されます。
         titles.append(title)
