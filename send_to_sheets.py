@@ -30,7 +30,7 @@ creds = service_account.Credentials.from_service_account_file(
 # 使用するスプレッドシートのIDと範囲を設定
 # SPREADSHEET_ID変数にスプレッドシートのIDを設定します。
 # これにより、データが書き込まれるスプレッドシートが指定されます。
-SPREADSHEET_ID = 'https://docs.google.com/spreadsheets/d/1bX63acuqzf3yQ-oF6QTEyybcg52wjh5gC78wvIWDdq0/edit?usp=sharing'
+SPREADSHEET_ID = '1bX63acuqzf3yQ-oF6QTEyybcg52wjh5gC78wvIWDdq0'
 # RANGE_NAME変数にスプレッドシートの範囲を設定します。
 # これにより、データが書き込まれるセルの範囲が指定されます。
 RANGE_NAME = 'Sheet1!A1'
