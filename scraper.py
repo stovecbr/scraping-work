@@ -79,7 +79,7 @@ for i in range(1, 11):  # 上から10個のアイテムを収集
     try:
         # find_elementメソッドを使用して、指定された要素を取得します。
         # これにより、指定されたXPathパターンに一致する要素が取得されます。
-        title = driver.find_element(By.XPATH, f'//*[@id="__layout"]/div/div[2]/div[1]/div/ul/li[1]/ul/li[1]/a').text
+        title = driver.find_element(By.XPATH, f'//*[@id="__layout"]/div/div[2]/div[1]/div/ul/li[1]/ul/li[{i}]/a').text
         # appendメソッドを使用して、リストに要素を追加します。
         # これにより、収集されたタイトルがリストに追加されます。
         titles.append(title)
