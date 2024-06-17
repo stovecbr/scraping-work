@@ -47,15 +47,19 @@ RUN apt-get update && apt-get install -y \
 # Google Chromeのインストール
 # この行は、Googleの公開鍵をダウンロードし、APTの鍵リングに追加します。
 # これにより、Googleのパッケージが信頼できることが確認されます。
-RUN wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add - \
+# RUN wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add - \
+# apt-key add が非推奨になったため、以下のように変更します。
+RUN wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | gpg --dearmor > /etc/apt/trusted.gpg.d/google.gpg && \
+echo "deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/google.gpg] http://dl.google.com/linux/chrome/deb/ stable main" | tee /etc/apt/sources.list.d/google-chrome.list && \
 # この行は、Googleの公開鍵をダウンロードし、APTの鍵リングに追加します。
 # これにより、Googleのパッケージが信頼できることが確認されます。
-    && echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | tee /etc/apt/sources.list.d/google-chrome.list \
-    # この行は、Google ChromeのAPTリポジトリをシステムのリポジトリリストに追加します。
-    && apt-get update \
-    # この行は、パッケージリストを更新します。
-    # これにより、先ほど追加したGoogle Chromeのリポジトリが認識されます。
-    && apt-get install -y google-chrome-stable
+    # && echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | tee /etc/apt/sources.list.d/google-chrome.list \
+    # この行は、Google Chromeをインストールします。
+    # この行は、apt-get updateコマンドを実行し、パッケージリストを更新します。
+    apt-get update && \
+    # この行は、Google Chromeをインストールします。
+    # -yオプションは、インストール中にすべての質問に自動的に「はい」と回答します。
+    apt-get install -y google-chrome-stable
 
 # Chromedriverをインストール
 # この行は、Googleのストレージから特定のバージョンのChromeDriverのzipファイルをダウンロードします。
