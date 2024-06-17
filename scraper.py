@@ -18,13 +18,22 @@ from selenium.webdriver.common.by import By
 # これにより、Chromeブラウザのオプションを管理するためのクラスが利用可能になります。
 from selenium.webdriver.chrome.options import Options
 
-
+# seleniumのwebdriverモジュールからActionChainsクラスをインポートします。
+# これにより、マウスやキーボードの操作をシミュレートするためのクラスが利用可能になります。
 from selenium.webdriver.common.action_chains import ActionChains
+# seleniumのwebdriverモジュールからKeysクラスをインポートします。
+# これにより、キーボードのキーを表すためのクラスが利用可能になります。
 from selenium.webdriver.common.keys import Keys
+# seleniumのwebdriverモジュールからSelectクラスをインポートします。
+# これにより、ドロップダウンメニューを操作するためのクラスが利用可能になります。
 from selenium.webdriver.support.ui import Select
+# seleniumのwebdriverモジュールからexpected_conditionsモジュールをインポートします。
+# これにより、要素が特定の状態になるまで待機するための関数などが利用可能になります。
 from selenium.webdriver.support import expected_conditions
+# seleniumのwebdriverモジュールからWebDriverWaitクラスをインポートします。
+# これにより、要素が特定の状態になるまで待機するためのクラスが利用可能になります。
 from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.common.action_chains import ActionChains
+
 
 # ChromeDriverのパスを設定
 webdriver_service = Service('/usr/bin/chromedriver')
@@ -50,8 +59,13 @@ chrome_options.add_argument("--no-sandbox")
 
 # Chromeのバイナリのパスを指定します。
 chrome_options.binary_location = "/usr/bin/google-chrome-stable"
-
+# add_argumentメソッドを使用して、指定されたオプションを設定します。
+# これにより、指定されたオプションが有効になります。
+# これにより、GPUを無効にすることができます。
 chrome_options.add_argument("--disable-gpu")  # GPUを無効にする
+# これにより、ヘッドレスモードでの実行時に必要な設定が有効になります。
+# remote-debugging-portオプションを設定します。
+# これにより、リモートデバッグポートが有効になります。
 chrome_options.add_argument("--remote-debugging-port=9222")  # リモートデバッグポートを設定する
 
 
