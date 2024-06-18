@@ -1,3 +1,0 @@
-- windows 上で生成した exe ファイルをコピーして入れた
-- 以下のコミット時点のものを実行したあとのデータがこのフォルダ内にある
-- [7eea73b](https://github.com/stovecbr/scraping-work/commit/7eea73bf34331ccb2114371be95baf8ab24b260a)
