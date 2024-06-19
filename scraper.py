@@ -87,7 +87,7 @@ for i in range(1, 21):  # 上から20個のアイテムを収集
 driver.quit()
 
 # データフレームに整形
-df = pd.DataFrame(titles, columns=['Title'])
+df = pd.DataFrame(titles, columns=['★category title★'])
 
 # データをCSVファイルとして保存
 df.to_csv('./data/coconala_titles.csv', index=False)
