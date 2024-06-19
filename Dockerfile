@@ -7,6 +7,10 @@ ENV PYTHONUNBUFFERED=1
 # タイムゾーンを東京に設定します。
 ENV TZ Asia/Tokyo
 
+# docker-compose.ymlファイルで環境変数RUNNING_IN_DOCKERを設定します。
+# この環境変数は、Dockerコンテナ内で実行されていることを示します。
+ENV RUNNING_IN_DOCKER=true
+
 # イメージ内のパッケージリストを更新し、必要なツールをインストールします。
 RUN apt-get update && apt-get install -y \
 # フリーのユーティリティで、HTTP、HTTPS、FTPプロトコルを使用してネットワークからデータをダウンロードします。
