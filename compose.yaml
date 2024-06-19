@@ -1,67 +1,31 @@
-# This file is used to run the scraper and send_to_sheets scripts in separate containers
-# The scraper container will scrape the data and save it to a file
-# The send_to_sheets container will read the data from the file and send it to a Google Sheet
-# Docker Composeのバージョンを指定します。
 version: '3'
-#  このDocker Composeファイルで定義するサービスを指定します。
-services:
-# "scraper"という名前のサービスを定義します。
-  scraper:
-  # このサービスのDockerイメージのビルド設定を指定します。
-    build: 
-    # Dockerfileが存在するディレクトリのパスを指定します。
-      context: .
-      #  DockerイメージをビルドするためのDockerfileの名前を指定します。
-      dockerfile: Dockerfile
-    # このサービスで使用するボリュームを指定します。  
-    volumes:
-    # ホストの現在のディレクトリをコンテナの/usr/src/appディレクトリにマウントします。
-      - .:/usr/src/app
-      # ホストの./dataディレクトリをコンテナの/usr/src/app/dataディレクトリにマウントします。
-      - ./data:/usr/src/app/data
-      # ホストの./scraping_credentials.jsonファイルをコンテナの/app/scraping_credentials.jsonに読み取り専用でマウントします。
-      - './scraping_credentials.json:/app/scraping_credentials.json:ro'
-   # このサービスの環境変数を指定します。   
-    environment:
-      # PYTHONUNBUFFERED環境変数を1に設定します。
-      # これにより、Pythonの標準出力がバッファリングされずにリアルタイムで表示されます。
-      - PYTHONUNBUFFERED=1
-    # このサービスで実行するコマンドを指定します。
-    # この場合、scraper.pyスクリプトを実行します。
-    command: python scraper.py
-    # ttyを有効にします。これにより、コンテナ内で対話的なシェルを使用できます。
-    tty: true
-    # stdin_openを有効にします。これにより、コンテナ内で標準入力を使用できます。
-    stdin_open: true
 
-# "send_to_sheets"という名前のサービスを定義します。
+services:
+  scraper:
+      build: 
+        context: .
+        dockerfile: Dockerfile
+      volumes:
+        - .:/usr/src/app
+        - ./data:/usr/src/app/data
+        - './scraping_credentials.json:/app/scraping_credentials.json:ro'
+      environment:
+        - PYTHONUNBUFFERED=1
+      command: python scraper.py
+      tty: true
+      stdin_open: true
+
   send_to_sheets:
-  # このサービスのDockerイメージのビルド設定を指定します。
     build: 
-    # Dockerfileが存在するディレクトリのパスを指定します。
       context: .
-      # DockerイメージをビルドするためのDockerfileの名前を指定します。
       dockerfile: Dockerfile
-    # このサービスで使用するボリュームを指定します。
     volumes:
-    # ホストの現在のディレクトリをコンテナの/usr/src/appディレクトリにマウントします。
       - .:/usr/src/app
-      # ホストの./dataディレクトリをコンテナの/usr/src/app/dataディレクトリにマウントします。
       - ./data:/usr/src/app/data
-      # ホストの./scraping_credentials.jsonファイルをコンテナの/app/scraping_credentials.jsonに読み取り専用でマウントします。
       - './scraping_credentials.json:/app/scraping_credentials.json:ro'
-    # このサービスの環境変数を指定します。  
     environment:
-      # PYTHONUNBUFFERED環境変数を1に設定します。
-      # これにより、Pythonの標準出力がバッファリングされずにリアルタイムで表示されます。
       - PYTHONUNBUFFERED=1
-      # RUNNING_IN_DOCKER環境変数をtrueに設定します。
-      # これにより、スクリプトがDockerコンテナ内で実行されていることを示します。
       - RUNNING_IN_DOCKER=true
-    # このサービスで実行するコマンドを指定します。
-    # この場合、send_to_sheets.pyスクリプトを実行します。
     command: python send_to_sheets.py
-    # ttyを有効にします。これにより、コンテナ内で対話的なシェルを使用できます。
     tty: true
-    # stdin_openを有効にします。これにより、コンテナ内で標準入力を使用できます。
     stdin_open: true
