@@ -18,12 +18,16 @@ from selenium.webdriver.support.wait import WebDriverWait
 current_dir = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
 
 # Construct the path to the chromedriver
-chromedriver_path = os.path.join(current_dir, 'chromedriver.exe')
+if os.environ.get('RUNNING_IN_DOCKER'):
+    chromedriver_path = '/usr/bin/chromedriver'
+else:
+    chromedriver_path = os.path.join(current_dir, 'chromedriver.exe')
 
 
 
 # ChromeDriverのパスを設定
 # webdriver_service = Service('/usr/bin/chromedriver')
+
 webdriver_service = Service(chromedriver_path)
 
 # ディレクトリのパス

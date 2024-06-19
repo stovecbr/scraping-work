@@ -55,6 +55,9 @@ services:
       # PYTHONUNBUFFERED環境変数を1に設定します。
       # これにより、Pythonの標準出力がバッファリングされずにリアルタイムで表示されます。
       - PYTHONUNBUFFERED=1
+      # RUNNING_IN_DOCKER環境変数をtrueに設定します。
+      # これにより、スクリプトがDockerコンテナ内で実行されていることを示します。
+      - RUNNING_IN_DOCKER=true
     # このサービスで実行するコマンドを指定します。
     # この場合、send_to_sheets.pyスクリプトを実行します。
     command: python send_to_sheets.py
