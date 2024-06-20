@@ -1,9 +1,31 @@
+version: '3'
+
 services:
-  python:
+  scraper:
+      build: 
+        context: .
+        dockerfile: Dockerfile
+      volumes:
+        - .:/usr/src/app
+        - ./data:/usr/src/app/data
+        - './scraping_credentials.json:/app/scraping_credentials.json:ro'
+      environment:
+        - PYTHONUNBUFFERED=1
+      command: python scraper.py
+      tty: true
+      stdin_open: true
+
+  send_to_sheets:
     build: 
-      context: ./docker/python
+      context: .
       dockerfile: Dockerfile
     volumes:
-      - './python:/usr/src/app'
+      - .:/usr/src/app
+      - ./data:/usr/src/app/data
+      - './scraping_credentials.json:/app/scraping_credentials.json:ro'
+    environment:
+      - PYTHONUNBUFFERED=1
+      - RUNNING_IN_DOCKER=true
+    command: python send_to_sheets.py
     tty: true
     stdin_open: true
