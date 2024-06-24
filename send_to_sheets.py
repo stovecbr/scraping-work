@@ -5,6 +5,14 @@ from google.oauth2 import service_account
 # この関数を使用して、Google Sheets APIを構築します。
 from googleapiclient.discovery import build
 
+# 環境変数を読み込む
+from dotenv import load_dotenv  
+# osモジュールを使用して環境変数を読み込む
+import os
+
+# .envファイルを読み込む
+load_dotenv()
+
 # Google Sheets APIの設定
 # 読み取り専用のアクセスが必要な場合、
 # スコープをhttps://www.googleapis.com/auth/spreadsheets.readonlyに変更
@@ -17,7 +25,10 @@ creds = service_account.Credentials.from_service_account_file(
         SERVICE_ACCOUNT_FILE, scopes=SCOPES)
 
 # 使用するスプレッドシートのIDと範囲を設定
-SPREADSHEET_ID = '1bX63acuqzf3yQ-oF6QTEyybcg52wjh5gC78wvIWDdq0'
+# SPREADSHEET_ID = '1bXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
+# 環境変数を取得する
+SPREADSHEET_ID = os.getenv('SPREADSHEET_ID')
+
 
 RANGE_NAME = 'Sheet1!A1'
 
