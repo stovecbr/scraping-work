@@ -35,9 +35,6 @@ RANGE_NAME = 'Sheet1!A1'
 # データをCSVファイルから読み込む
 df = pd.read_csv('./data/coconala_titles.csv')
 
-# データを出力する
-print(df)
-
 # データをリストに変換
 values = [df.columns.values.tolist()] + df.values.tolist()
 
