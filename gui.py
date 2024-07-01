@@ -82,8 +82,8 @@ class App:
 
         # スクレイパーとデータ送信スクリプトを実行
         try:
-            call(["python", "scraper.py"])
-            call(["python", "send_to_sheets.py"])
+            call(["python3", "scraper.py"])
+            call(["python3", "send_to_sheets.py"])
             messagebox.showinfo("success!!", "Data sent to Google Sheets")
         except CalledProcessError as e:
             messagebox.showerror(
