@@ -1,14 +1,22 @@
+"""
+このファイルは、pandasを使用してCSVファイルのデータをGoogle Sheetsに送信するためのスクリプトです。
+このスクリプトは、Google Sheets APIを使用してGoogle Sheetsにデータを送信します。
+"""
+
+# osモジュールを使用して環境変数を読み込む
+import os
+
 # pandasを使ってCSVファイルのデータをGoogle Sheetsに送信する
 import pandas as pd
 
 from google.oauth2 import service_account
+
 # この関数を使用して、Google Sheets APIを構築します。
 from googleapiclient.discovery import build
 
 # 環境変数を読み込む
-from dotenv import load_dotenv  
-# osモジュールを使用して環境変数を読み込む
-import os
+from dotenv import load_dotenv
+
 
 # .envファイルを読み込む
 load_dotenv()
@@ -16,24 +24,25 @@ load_dotenv()
 # Google Sheets APIの設定
 # 読み取り専用のアクセスが必要な場合、
 # スコープをhttps://www.googleapis.com/auth/spreadsheets.readonlyに変更
-SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
+SCOPES = ["https://www.googleapis.com/auth/spreadsheets"]
 
-SERVICE_ACCOUNT_FILE = 'scraping_credentials.json'
+SERVICE_ACCOUNT_FILE = "scraping_credentials.json"
 
 # サービスアカウントの資格情報を使用して認証します。
 creds = service_account.Credentials.from_service_account_file(
-        SERVICE_ACCOUNT_FILE, scopes=SCOPES)
+    SERVICE_ACCOUNT_FILE, scopes=SCOPES
+)
 
 # 使用するスプレッドシートのIDと範囲を設定
 # SPREADSHEET_ID = '1bXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
 # 環境変数を取得する
-SPREADSHEET_ID = os.getenv('SPREADSHEET_ID')
+SPREADSHEET_ID = os.getenv("SPREADSHEET_ID")
 
 
-RANGE_NAME = 'Sheet1!A1'
+RANGE_NAME = "Sheet1!A1"
 
 # データをCSVファイルから読み込む
-df = pd.read_csv('./data/coconala_titles.csv')
+df = pd.read_csv("./data/coconala_titles.csv")
 
 # データを出力する
 print(df)
@@ -42,13 +51,20 @@ print(df)
 values = [df.columns.values.tolist()] + df.values.tolist()
 
 # データをGoogle Sheetsに書き込む
-service = build('sheets', 'v4', credentials=creds)
+service = build("sheets", "v4", credentials=creds)
 # spreadsheetsメソッドを使用して、スプレッドシートにアクセスします。
+# service.spreadsheets()は実行時には存在しますが、静的解析ツールのPylintはこれを認識できません。
+# エラーを回避するために、次の行で無視します。
+# pylint: disable=E1101
 sheet = service.spreadsheets()
 
 # valuesメソッドを使用して、スプレッドシートにデータを書き込みます。
-request = sheet.values().update(spreadsheetId=SPREADSHEET_ID, range=RANGE_NAME,
-                                valueInputOption='RAW', body={'values': values})
+request = sheet.values().update(
+    spreadsheetId=SPREADSHEET_ID,
+    range=RANGE_NAME,
+    valueInputOption="RAW",
+    body={"values": values},
+)
 # executeメソッドを使用して、リクエストを実行します。
 response = request.execute()
 
