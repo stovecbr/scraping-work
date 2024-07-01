@@ -1,0 +1,8 @@
+coconala-scraping.txt
+scraping_credentials.json
+*.py[cod]
+__pycache__/
+*.pyo
+*.pyd
+.env
+.json
