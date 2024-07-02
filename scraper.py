@@ -9,6 +9,8 @@ WebDriverは、Webブラウザを制御するためのAPIです。
 
 import sys
 import os
+
+# import stat
 import platform
 import time
 import pandas as pd
@@ -41,7 +43,9 @@ else:
 webdriver_service = Service(CHROMEDRIVER_PATH)
 
 # ディレクトリのパス
-DIR_PATH = "data"
+DIR_PATH = "./data"
+
+# os.chmod(DIR_PATH, stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
 
 # ディレクトリが存在しない場合は作成する
 if not os.path.exists(DIR_PATH):

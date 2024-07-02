@@ -6,7 +6,7 @@ services:
         context: .
         dockerfile: Dockerfile
       volumes:
-        - .:/usr/src/app
+        # - .:/usr/src/app
         - ./data:/usr/src/app/data
         # - ./data:/app/data
         - './scraping_credentials.json:/app/scraping_credentials.json:ro'
@@ -16,12 +16,13 @@ services:
       tty: true
       stdin_open: true
 
+
   send_to_sheets:
     build: 
       context: .
       dockerfile: Dockerfile
     volumes:
-      - .:/usr/src/app
+      # - .:/usr/src/app
       - ./data:/usr/src/app/data
       # - ./data:/app/data
       - './scraping_credentials.json:/app/scraping_credentials.json:ro'
@@ -31,3 +32,6 @@ services:
     command: python send_to_sheets.py
     tty: true
     stdin_open: true
+
+    depends_on:
+      - scraper
