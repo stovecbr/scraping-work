@@ -18,7 +18,6 @@ class App:
     def __init__(self, root_window):
         self.root = root_window
         self.root.title("てすとScraper Setup Tool")
-
         # 認証ファイルのラベルとボタン
         self.auth_label = tk.Label(self.root, text="てすとcredentials file")
         self.auth_label.pack()
@@ -61,8 +60,11 @@ class App:
         sheet_id = self.sheet_id_entry.get()
         # 認証ファイルをコピー
         target_path = os.path.join(os.getcwd(), "scraping_credentials.json")
+        # 認証ファイルが存在していて、認証ファイルのパスがターゲットパスと異なる場合はコピー
         if os.path.exists(self.auth_file_path) and self.auth_file_path != target_path:
+            # 認証ファイルをコピー
             shutil.copy(self.auth_file_path, target_path)
+        # スプレッドシートIDが入力されていない場合はエラーメッセージを表示
         if not sheet_id:
             messagebox.showerror("Error", "Please enter a Spreadsheet ID")
             return

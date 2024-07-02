@@ -55,6 +55,10 @@ RUN groupadd -g $GID $GROUPNAME && \
     useradd -m -s /bin/bash -u $UID -g $GID $USERNAME && \
     mkdir -p $WORKDIR && \
     chown -R $UID:$GID $WORKDIR
+RUN mkdir -p $WORKDIR/data && \
+    chown -R $UID:$GID $WORKDIR/data
+
+    
 
 WORKDIR $WORKDIR
 

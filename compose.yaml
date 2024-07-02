@@ -8,6 +8,7 @@ services:
       volumes:
         - .:/usr/src/app
         - ./data:/usr/src/app/data
+        # - ./data:/app/data
         - './scraping_credentials.json:/app/scraping_credentials.json:ro'
       environment:
         - PYTHONUNBUFFERED=1
@@ -22,6 +23,7 @@ services:
     volumes:
       - .:/usr/src/app
       - ./data:/usr/src/app/data
+      # - ./data:/app/data
       - './scraping_credentials.json:/app/scraping_credentials.json:ro'
     environment:
       - PYTHONUNBUFFERED=1
